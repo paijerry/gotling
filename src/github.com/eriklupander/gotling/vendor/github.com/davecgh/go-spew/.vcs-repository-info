@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/davecgh/go-spew",
+  "uri": "https://github.com/davecgh/go-spew.git",
+  "fullRef": "346938d642f2ec3594ed81d874461961cd0faa76",
+  "lastUpdatedMillis": 1484797708565
+}

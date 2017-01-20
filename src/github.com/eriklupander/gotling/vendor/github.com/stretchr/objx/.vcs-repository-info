@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/stretchr/objx",
+  "uri": "https://github.com/stretchr/objx.git",
+  "fullRef": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94",
+  "lastUpdatedMillis": 1484797718734
+}

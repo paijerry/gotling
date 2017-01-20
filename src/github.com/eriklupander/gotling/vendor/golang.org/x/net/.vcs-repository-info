@@ -1,0 +1,9 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "golang.org/x/net",
+  "uri": "https://github.com/golang/net.git",
+  "ref": "master",
+  "fullRef": "f2499483f923065a842d38eb4c7f1927e6fc6e6d",
+  "lastUpdatedMillis": 1484797736622
+}

@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/NodePrime/jsonpath",
+  "uri": "https://github.com/NodePrime/jsonpath.git",
+  "fullRef": "84403ded544328c99be3472727667179eef23a91",
+  "lastUpdatedMillis": 1484797665864
+}

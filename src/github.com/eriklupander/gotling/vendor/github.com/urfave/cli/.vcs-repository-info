@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/urfave/cli",
+  "uri": "https://github.com/urfave/cli.git",
+  "fullRef": "f1be59ff3d239f0942b201619030d302bce912cc",
+  "lastUpdatedMillis": 1484797654898
+}

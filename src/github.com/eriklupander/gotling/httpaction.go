@@ -24,119 +24,143 @@ SOFTWARE.
 package main
 
 import (
-    "log"
+	"fmt"
+	"log"
 )
 
 type HttpAction struct {
-    Method          string              `yaml:"method"`
-    Url             string              `yaml:"url"`
-    Body            string              `yaml:"body"`
-    Template        string              `yaml:"template"`
-    Accept          string              `yaml:"accept"`
-    ContentType     string              `yaml:"contentType"`
-    Title           string              `yaml:"title"`
-    ResponseHandler HttpResponseHandler `yaml:"response"`
-    StoreCookie     string              `yaml:"storeCookie"`
+	Method          string              `yaml:"method"`
+	Url             string              `yaml:"url"`
+	Body            string              `yaml:"body"`
+	Template        string              `yaml:"template"`
+	Accept          string              `yaml:"accept"`
+	ContentType     string              `yaml:"contentType"`
+	Title           string              `yaml:"title"`
+	MerchantName    string              `yaml:"merchantname"`
+	SecretKey       string              `yaml:"secretkey"`
+	ResponseHandler HttpResponseHandler `yaml:"response"`
+	StoreCookie     string              `yaml:"storeCookie"`
 }
 
 func (h HttpAction) Execute(resultsChannel chan HttpReqResult, sessionMap map[string]string) {
-    DoHttpRequest(h, resultsChannel, sessionMap)
+	DoHttpRequest(h, resultsChannel, sessionMap)
 }
 
 type HttpResponseHandler struct {
-    Jsonpath string `yaml:"jsonpath"`
-    Xmlpath string `yaml:"xmlpath"`
-    Variable string `yaml:"variable"`
-    Index    string `yaml:"index"`
+	Jsonpath string `yaml:"jsonpath"`
+	Xmlpath  string `yaml:"xmlpath"`
+	Variable string `yaml:"variable"`
+	Index    string `yaml:"index"`
 }
 
 func NewHttpAction(a map[interface{}]interface{}) HttpAction {
-    var valid bool = true
-    if a["url"] == "" || a["url"] == nil {
-        log.Println("Error: HttpAction must define a URL.")
-        valid = false
-    }
-    if a["method"] == nil || (a["method"] != "GET" && a["method"] != "POST" && a["method"] != "PUT" && a["method"] != "DELETE") {
-        log.Println("Error: HttpAction must specify a HTTP method: GET, POST, PUT or DELETE")
-        valid = false
-    }
-    if a["title"] == nil || a["title"] == "" {
-        log.Println("Error: HttpAction must define a title.")
-        valid = false
-    }
+	var valid bool = true
+	if a["url"] == "" || a["url"] == nil {
+		log.Println("Error: HttpAction must define a URL.")
+		valid = false
+	}
+	if a["method"] == nil || (a["method"] != "GET" && a["method"] != "POST" && a["method"] != "PUT" && a["method"] != "DELETE") {
+		log.Println("Error: HttpAction must specify a HTTP method: GET, POST, PUT or DELETE")
+		valid = false
+	}
+	if a["title"] == nil || a["title"] == "" {
+		log.Println("Error: HttpAction must define a title.")
+		valid = false
+	}
 
-    if a["body"] != nil && a["template"] != nil {
-        log.Println("Error: A HttpAction can not define both a 'body' and a 'template'.")
-        valid = false
-    }
+	if a["title"] == "Entry Auth" {
+		if a["merchantname"] == nil || a["merchantname"] == "" {
+			log.Println("Error: HttpAction must define a merchantname.")
+			valid = false
+		}
 
-    if a["response"] != nil {
-        r := a["response"].(map[interface{}]interface{})
-        if r["index"] == nil || r["index"] == "" || (r["index"] != "first" && r["index"] != "last" && r["index"] != "random") {
-            log.Println("Error: HttpAction ResponseHandler must define an Index of either of: first, last or random.")
-            valid = false
-        }
-        if (r["jsonpath"] == nil || r["jsonpath"] == "") && (r["xmlpath"] == nil || r["xmlpath"] == "") {
-            log.Println("Error: HttpAction ResponseHandler must define a Jsonpath or a Xmlpath.")
-            valid = false
-        }
-        if (r["jsonpath"] != nil && r["jsonpath"] != "") && (r["xmlpath"] != nil && r["xmlpath"] != "") {
-            log.Println("Error: HttpAction ResponseHandler can only define either a Jsonpath OR a Xmlpath.")
-            valid = false
-        }
+		if a["secretkey"] == nil || a["secretkey"] == "" {
+			log.Println("Error: HttpAction must define a secretkey.")
+			valid = false
+		}
+	}
 
-        // TODO perhaps compile Xmlpath expressions so we can validate early?
+	if a["body"] != nil && a["template"] != nil {
+		log.Println("Error: A HttpAction can not define both a 'body' and a 'template'.")
+		valid = false
+	}
 
-        if r["variable"] == nil || r["variable"] == "" {
-            log.Println("Error: HttpAction ResponseHandler must define a Variable.")
-            valid = false
-        }
-    }
+	if a["response"] != nil {
+		r := a["response"].(map[interface{}]interface{})
+		if r["index"] == nil || r["index"] == "" || (r["index"] != "first" && r["index"] != "last" && r["index"] != "random") {
+			log.Println("Error: HttpAction ResponseHandler must define an Index of either of: first, last or random.")
+			valid = false
+		}
+		if (r["jsonpath"] == nil || r["jsonpath"] == "") && (r["xmlpath"] == nil || r["xmlpath"] == "") {
+			log.Println("Error: HttpAction ResponseHandler must define a Jsonpath or a Xmlpath.")
+			valid = false
+		}
+		if (r["jsonpath"] != nil && r["jsonpath"] != "") && (r["xmlpath"] != nil && r["xmlpath"] != "") {
+			log.Println("Error: HttpAction ResponseHandler can only define either a Jsonpath OR a Xmlpath.")
+			valid = false
+		}
 
-    if !valid {
-        log.Fatalf("Your YAML defintion contains an invalid HttpAction, see errors listed above.")
-    }
-    var responseHandler HttpResponseHandler
-    if a["response"] != nil {
-        response := a["response"].(map[interface{}]interface{})
+		// TODO perhaps compile Xmlpath expressions so we can validate early?
 
-        if response["jsonpath"] != nil && response["jsonpath"] != "" {
-            responseHandler.Jsonpath = response["jsonpath"].(string)
-        }
-        if response["xmlpath"] != nil && response["xmlpath"] != "" {
-            responseHandler.Xmlpath = response["xmlpath"].(string)
-        }
+		if r["variable"] == nil || r["variable"] == "" {
+			log.Println("Error: HttpAction ResponseHandler must define a Variable.")
+			valid = false
+		}
+	}
 
-        responseHandler.Variable = response["variable"].(string)
-        responseHandler.Index = response["index"].(string)
-    }
+	if !valid {
+		log.Fatalf("Your YAML defintion contains an invalid HttpAction, see errors listed above.")
+	}
+	var responseHandler HttpResponseHandler
+	if a["response"] != nil {
+		response := a["response"].(map[interface{}]interface{})
 
-    accept := "text/html,application/json,application/xhtml+xml,application/xml,text/plain"
-    if a["accept"] != nil && len(a["accept"].(string)) > 0 {
-        accept = a["accept"].(string)
-    }
+		if response["jsonpath"] != nil && response["jsonpath"] != "" {
+			responseHandler.Jsonpath = response["jsonpath"].(string)
+		}
+		if response["xmlpath"] != nil && response["xmlpath"] != "" {
+			responseHandler.Xmlpath = response["xmlpath"].(string)
+		}
 
-    var contentType string
-    if a["contentType"] != nil && len(a["contentType"].(string)) > 0 {
-        contentType = a["contentType"].(string)
-    }
+		responseHandler.Variable = response["variable"].(string)
+		responseHandler.Index = response["index"].(string)
+	}
 
-    var storeCookie string
-    if a["storeCookie"] != nil && a["storeCookie"].(string) != "" {
-        storeCookie = a["storeCookie"].(string)
-    }
+	accept := "text/html,application/json,application/xhtml+xml,application/xml,text/plain"
+	if a["accept"] != nil && len(a["accept"].(string)) > 0 {
+		accept = a["accept"].(string)
+	}
 
-    httpAction := HttpAction{
-        a["method"].(string),
-        a["url"].(string),
-        getBody(a),
-        getTemplate(a),
-        accept,
-        contentType,
-        a["title"].(string),
-        responseHandler,
-        storeCookie,
-    }
+	var contentType string
+	if a["contentType"] != nil && len(a["contentType"].(string)) > 0 {
+		contentType = a["contentType"].(string)
+	}
 
-    return httpAction
+	var storeCookie string
+	if a["storeCookie"] != nil && a["storeCookie"].(string) != "" {
+		storeCookie = a["storeCookie"].(string)
+	}
+	fmt.Println(a)
+	httpAction := HttpAction{
+		a["method"].(string),
+		a["url"].(string),
+		getBody(a),
+		getTemplate(a),
+		accept,
+		contentType,
+		a["title"].(string),
+		getHeader(a, "merchantname"),
+		getHeader(a, "secretkey"),
+		responseHandler,
+		storeCookie,
+	}
+
+	return httpAction
+}
+
+func getHeader(a map[interface{}]interface{}, i string) string {
+	if a[i] == nil {
+		return ""
+	}
+	return a[i].(string)
 }

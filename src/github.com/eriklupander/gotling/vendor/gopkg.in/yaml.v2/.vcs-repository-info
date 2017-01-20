@@ -1,0 +1,9 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "gopkg.in/yaml.v2",
+  "uri": "https://github.com/go-yaml/yaml.git",
+  "ref": "refs/heads/v2",
+  "fullRef": "a5b47d31c556af34a302ce5d659e6fea44d90de0",
+  "lastUpdatedMillis": 1484797702457
+}

@@ -1,0 +1,5 @@
+=== RUN   TestEach
+15
+--- PASS: TestEach (0.00s)
+PASS
+ok  	github.com/eriklupander/gotling/test	0.007s

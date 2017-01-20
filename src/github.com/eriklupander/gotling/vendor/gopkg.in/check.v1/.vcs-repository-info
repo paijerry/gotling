@@ -1,0 +1,9 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "gopkg.in/check.v1",
+  "uri": "https://github.com/go-check/check.git",
+  "ref": "refs/heads/v1",
+  "fullRef": "20d25e2804050c1cd24a7eea1e7a6447dd0e74ec",
+  "lastUpdatedMillis": 1484797746628
+}

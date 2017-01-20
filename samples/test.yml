@@ -1,0 +1,97 @@
+---
+iterations: 200 #每個user總執行次數
+users: 500 #每秒執行次數
+rampup: 0 #起伏程度
+feeder:
+  #type: csv #csv, json
+  #filename: player2001.csv
+actions:
+  - http:
+      title: Entry Auth
+      method: POST
+      url: http://192.168.0.107/players/authentication
+      body: '{"playerAccount":"${id}","gameCode":"1","technology":"H5","language":"en","platform":"WEB","gameHall":"tycoon"}'
+      accept: json
+      contentType: application/json
+      merchantname: test17
+      secretkey: hello123
+      response:                             # Defines handling of response data (JSON only). Optional
+        jsonpath: $.data.token+                # Defines a JsonPath expression to use for extracting a single value from the response body
+        variable: token                  # Store the extracted value in the current user's context with this variable name
+        index: first
+  - sleep:
+      duration: 1
+
+
+  - http:
+      title: Integration Auth
+      method: POST
+      url: http://192.168.0.105/authenticate.html
+      body: '{"token":"${token}","providerId":"TycoonGame"}'
+      accept: json
+      contentType: application/json
+      response:
+        jsonpath: $.userId+
+        variable: userid
+        index: first
+  - sleep:
+      duration: 1
+
+
+  - http:
+      title: Integration Bet
+      method: POST
+      url: http://192.168.0.105/bet.html
+      body: '{
+  "userId":"${userid}",
+  "gameId":"testGame",
+  "roundId":"${roundid}",
+  "amount":7.5,
+  "reference":"${betid}",
+  "providerId":"TycoonGame",
+  "timestamp":"${timestamp}",
+  "roundDetails":"spin",
+  "platform":"WEB"
+}'
+      accept: json
+      contentType: application/json
+  - sleep:
+      duration: 1
+
+
+  - http:
+      title: Integration Result
+      method: POST
+      url: http://192.168.0.105/result.html
+      body: '{
+  "userId":"${userid}",
+  "gameId":"testGame",
+  "roundId":"${roundid}",
+  "amount":7.5,
+  "reference":"${resultid}",
+  "providerId":"TycoonGame",
+  "timestamp":"${timestamp}",
+  "roundDetails":"spin",
+  "platform":"WEB"
+}'
+      accept: json
+      contentType: application/json
+  - sleep:
+      duration: 1
+
+
+  - http:
+      title: Integration EndRound
+      method: POST
+      url: http://192.168.0.105/endRound.html
+      body: '{
+  "userId": "${userid}",
+  "gameId": "testGame",
+  "roundId": "${roundid}",
+  "providerId": "TycoonGame",
+  "platform": "WEB"
+}'
+      accept: json
+      contentType: application/json
+  - sleep:
+      duration: 1

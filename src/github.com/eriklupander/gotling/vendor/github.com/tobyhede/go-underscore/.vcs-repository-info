@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/tobyhede/go-underscore",
+  "uri": "https://github.com/tobyhede/go-underscore.git",
+  "fullRef": "ea55fc9569918f099b1dfa785088434e5c53544d",
+  "lastUpdatedMillis": 1484797680821
+}

@@ -1,0 +1,8 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "github.com/gorilla/websocket",
+  "uri": "https://github.com/gorilla/websocket.git",
+  "fullRef": "bb547c6c5c59732c29a3266d7125a84f6c3fce32",
+  "lastUpdatedMillis": 1484797674300
+}

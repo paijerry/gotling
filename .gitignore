@@ -27,3 +27,12 @@ _testmain.go
 bin
 out
 pkg
+
+src/github.com/davecgh/
+src/github.com/gorilla/
+src/github.com/nu7hatch/
+src/github.com/paijerry/
+src/github.com/tobyhede/
+src/golang.org/
+src/gopkg.in/
+.DS_Store

@@ -1,0 +1,9 @@
+{
+  "creator": "org.echocat.gradle.plugins.golang 0.1.13-SNAPSHOT",
+  "type": "git",
+  "id": "gopkg.in/xmlpath.v2",
+  "uri": "https://github.com/go-xmlpath/xmlpath.git",
+  "ref": "refs/heads/v2",
+  "fullRef": "860cbeca3ebcc600db0b213c0e83ad6ce91f5739",
+  "lastUpdatedMillis": 1484797690409
+}
